@@ -6,12 +6,11 @@
 //  Copyright (c) 2012 Felix Krause. All rights reserved.
 //
 
+#import "GTColor+ColorsAddition.h"
 #import "TSMessageView.h"
-#import "HexColor.h"
 #import "TSBlurView.h"
-#import "TSMessage.h"
 
-#define TSMessageViewMinimumPadding 15.0
+#define TSMessageViewMinimumPadding 15.0f
 
 #define TSDesignFileName @"TSMessagesDefaultDesign.json"
 #define TSMessageBundleName @"TSMessages"
@@ -165,36 +164,31 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
         current = [notificationDesign valueForKey:currentString];
         
         
-        if (!image && [[current valueForKey:@"imageName"] length])
-        {
+        if (!image && [[current valueForKey:@"imageName"] length]) {
             image = [UIImage imageNamed:[NSString stringWithFormat:@"%@.bundle/%@", TSMessageBundleName, [current valueForKey:@"imageName"]]];
         }
         
-        if (![TSMessage iOS7StyleEnabled])
-        {
+        if (![TSMessage iOS7StyleEnabled]) {
             self.alpha = 0.0;
             
             // add background image here
             UIImage *backgroundImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@.bundle/%@", TSMessageBundleName, [current valueForKey:@"backgroundImageName"]]];
-            backgroundImage = [backgroundImage stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
+            backgroundImage = [backgroundImage stretchableImageWithLeftCapWidth:0 topCapHeight:0];
             
             _backgroundImageView = [[UIImageView alloc] initWithImage:backgroundImage];
             self.backgroundImageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
             [self addSubview:self.backgroundImageView];
         }
-        else
-        {
+        else {
             // On iOS 7 and above use a blur layer instead (not yet finished)
             _backgroundBlurView = [[TSBlurView alloc] init];
             self.backgroundBlurView.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
-            self.backgroundBlurView.blurTintColor = [UIColor colorWithHexString:current[@"backgroundColor"]];
+            self.backgroundBlurView.blurTintColor = [UIColor GT_colorWithHexString:current[@"backgroundColor"]];
             [self addSubview:self.backgroundBlurView];
         }
         
-        UIColor *fontColor = [UIColor colorWithHexString:[current valueForKey:@"textColor"]
-                                                   alpha:1.0];
-        
-        
+        UIColor *fontColor = [UIColor GT_colorWithHexString:[current valueForKey:@"textColor"]];
+
         self.textSpaceLeft = 2 * padding;
         if (image) self.textSpaceLeft += image.size.width + 2 * padding;
         
@@ -210,7 +204,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
         } else {
             [self.titleLabel setFont:[UIFont boldSystemFontOfSize:fontSize]];
         }
-        [self.titleLabel setShadowColor:[UIColor colorWithHexString:[current valueForKey:@"shadowColor"] alpha:1.0]];
+        [self.titleLabel setShadowColor:[UIColor GT_colorWithHexString:[current valueForKey:@"shadowColor"]]];
         [self.titleLabel setShadowOffset:CGSizeMake([[current valueForKey:@"shadowOffsetX"] floatValue],
                                                     [[current valueForKey:@"shadowOffsetY"] floatValue])];
         self.titleLabel.numberOfLines = 0;
@@ -218,14 +212,12 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
         [self addSubview:self.titleLabel];
         
         // Set up content label (if set)
-        if ([subtitle length])
-        {
+        if ([subtitle length]) {
             _contentLabel = [[UILabel alloc] init];
             [self.contentLabel setText:subtitle];
             
-            UIColor *contentTextColor = [UIColor colorWithHexString:[current valueForKey:@"contentTextColor"] alpha:1.0];
-            if (!contentTextColor)
-            {
+            UIColor *contentTextColor = [UIColor GT_colorWithHexString:[current valueForKey:@"contentTextColor"]];
+            if (!contentTextColor) {
                 contentTextColor = fontColor;
             }
             [self.contentLabel setTextColor:contentTextColor];
@@ -274,7 +266,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
             [self.button setBackgroundImage:buttonBackgroundImage forState:UIControlStateNormal];
             [self.button setTitle:self.buttonTitle forState:UIControlStateNormal];
             
-            UIColor *buttonTitleShadowColor = [UIColor colorWithHexString:[current valueForKey:@"buttonTitleShadowColor"] alpha:1.0];
+            UIColor *buttonTitleShadowColor = [UIColor GT_colorWithHexString:[current valueForKey:@"buttonTitleShadowColor"]];
             if (!buttonTitleShadowColor)
             {
                 buttonTitleShadowColor = self.titleLabel.shadowColor;
@@ -282,7 +274,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
             
             [self.button setTitleShadowColor:buttonTitleShadowColor forState:UIControlStateNormal];
             
-            UIColor *buttonTitleTextColor = [UIColor colorWithHexString:[current valueForKey:@"buttonTitleTextColor"] alpha:1.0];
+            UIColor *buttonTitleTextColor = [UIColor GT_colorWithHexString:[current valueForKey:@"buttonTitleTextColor"]];
             if (!buttonTitleTextColor)
             {
                 buttonTitleTextColor = fontColor;
@@ -315,8 +307,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
                                                                    0.0, // will be set later
                                                                    screenWidth,
                                                                    [[current valueForKey:@"borderHeight"] floatValue])];
-            self.borderView.backgroundColor = [UIColor colorWithHexString:[current valueForKey:@"borderColor"]
-                                                                    alpha:1.0];
+            self.borderView.backgroundColor = [UIColor GT_colorWithHexString:[current valueForKey:@"borderColor"]];
             self.borderView.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
             [self addSubview:self.borderView];
         }
@@ -374,15 +365,15 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
     self.titleLabel.frame = CGRectMake(self.textSpaceLeft,
                                        padding,
                                        screenWidth - padding - self.textSpaceLeft - self.textSpaceRight,
-                                       0.0);
+                                       0.0f);
     [self.titleLabel sizeToFit];
     
     if ([self.subtitle length])
     {
         self.contentLabel.frame = CGRectMake(self.textSpaceLeft,
-                                             self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height + 5.0,
+                                             self.titleLabel.frame.origin.y + self.titleLabel.frame.size.height + 5.0f,
                                              screenWidth - padding - self.textSpaceLeft - self.textSpaceRight,
-                                             0.0);
+                                             0.0f);
         [self.contentLabel sizeToFit];
         
         currentHeight = self.contentLabel.frame.origin.y + self.contentLabel.frame.size.height;
@@ -406,13 +397,13 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
         {
             // z-align
             self.iconImageView.center = CGPointMake([self.iconImageView center].x,
-                                                    round(currentHeight / 2.0));
+                                                    roundf(currentHeight / 2.0f));
         }
     }
     
     // z-align button
     self.button.center = CGPointMake([self.button center].x,
-                                     round(currentHeight / 2.0));
+                                     roundf(currentHeight / 2.0f));
     
     if (self.messagePosition == TSMessageNotificationPositionTop)
     {
@@ -430,7 +421,7 @@ canBeDismissedByUser:(BOOL)dismissingEnabled
     if (self.button)
     {
         self.button.frame = CGRectMake(self.frame.size.width - self.textSpaceRight,
-                                       round((self.frame.size.height / 2.0) - self.button.frame.size.height / 2.0),
+                                       roundf((self.frame.size.height / 2.0f) - self.button.frame.size.height / 2.0f),
                                        self.button.frame.size.width,
                                        self.button.frame.size.height);
     }

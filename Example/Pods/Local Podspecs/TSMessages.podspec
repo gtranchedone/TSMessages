@@ -30,5 +30,5 @@ There are 4 different types already set up for you: Success, Error, Warning, Mes
   s.resource_bundles = { 'TSMessages' => ['Pod/Assets/*.png', 'Pod/Assets/*.json'] }
 
   s.public_header_files = 'Pod/Classes/**/*.h'
-  s.dependency 'HexColors'
+  s.dependency 'GTFoundation/Colors'
 end

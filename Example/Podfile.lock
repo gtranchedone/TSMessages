@@ -4,10 +4,10 @@ PODS:
     - Expecta
     - FBSnapshotTestCase
   - FBSnapshotTestCase (1.1)
-  - HexColors (2.2.1)
+  - GTFoundation/Colors (0.1.4)
   - Specta (0.2.1)
   - TSMessages (0.9.10):
-    - HexColors
+    - GTFoundation/Colors
 
 DEPENDENCIES:
   - Expecta
@@ -24,8 +24,8 @@ SPEC CHECKSUMS:
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   Expecta+Snapshots: 30c28e3d8104665ee70e32df1cfc030bb37a8a6c
   FBSnapshotTestCase: 9053afee1d66b4c7c313fcb0ae582a5e47bea9d0
-  HexColors: 01384d2bbe8dc4ffa43c3b4135db6e976952d153
+  GTFoundation: ef904d0c4d1981c55edbf229444654822ff6b06c
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
-  TSMessages: 0cc47af029e012ae840eba88aa7ede0e868d8773
+  TSMessages: 2238c2943149565da71d471b17e530ec5e8c0e38
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.34.4

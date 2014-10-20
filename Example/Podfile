@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 target 'TSMessages', :exclusive => true do
   pod "TSMessages", :path => "../"
 end
